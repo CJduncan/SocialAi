@@ -8,7 +8,7 @@ import { getRandomPrompt} from '../utils';
 
 const CreatePost = () => {
   const navigate = useNavigate();
-  const [form, setform] = useState({
+  const [form, setForm] = useState({
     name: '',
     prompt:'',
     photo: '',
@@ -23,10 +23,13 @@ const CreatePost = () => {
   };
 
   const handleChange = (e) => {
+    setForm({...form, [e.target.name]: e.target.value});
 
   };
 
   const handleSupriseMe = () => {
+    const randomPronpt = getRandomPrompt(form.prompt);
+    setForm({...form, prompt: randomPronpt});
 
   };
 
