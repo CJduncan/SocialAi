@@ -91,6 +91,8 @@ const CreatePost = () => {
         setLoading(false);
       }
 
+    }else{
+      alert('Please enter a prompt');
     }
 
 
