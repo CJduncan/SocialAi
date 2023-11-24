@@ -18,6 +18,9 @@ const Home = () => {
   const [allPosts, setAllPosts] = useState(null);
   const [searchText, setSearchText] = useState('');
 
+  const [searchedResults, setSearchedResults] = useState(null);
+  const [searchTimeout, setSearchTimeout] = useState(null);
+
 
   useEffect(()=>{
     const fetchPosts = async ()  => {
