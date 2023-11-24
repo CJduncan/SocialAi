@@ -7,31 +7,49 @@ dotenv.config();
 const router = express.Router();
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // It's safer to use an environment variable for the API key
+  apiKey: process.env.OPENAI_API_KEY,
 });
-
 
 router.route('/').get((req, res) => {
     res.status(200).json({ message: 'Hello from DALL-E!' });
-  });
-  
-  router.route('/').post(async (req, res) => {
-    try {
+});
+
+// ...[previous code]...
+
+// ...[previous code]...
+
+router.route('/').post(async (req, res) => {
+  try {
       const { prompt } = req.body;
-  
-      const aiResponse = await openai.createImage({
-        prompt,
-        n: 1,
-        size: '1024x1024',
-        response_format: 'b64_json',
+
+      const response = await openai.images.generate({
+          prompt,
+          n: 1,
+          size: '1024x1024',
+          response_format: 'b64_json'
       });
-  
-      const image = aiResponse.data.data[0].b64_json;
-      res.status(200).json({ photo: image });
-    } catch (error) {
-      console.error(error);
-      res.status(500).send(error?.response.data.error.message || 'Something went wrong');
-    }
-  });
-  
-  export default router;
+
+      // Log the full response for inspection
+      console.log('Full Response:', response);
+
+      // Adjust the following line based on the actual response structure
+      const imageData = response.data;
+
+      if (!imageData) {
+          throw new Error('No image data found in response');
+      }
+
+      res.status(200).json({ photo: imageData });
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send({ message: error?.message || 'Something went wrong' });
+  }
+});
+
+// ...[rest of the code]...
+
+
+// ...[rest of the code]...
+
+
+export default router;
